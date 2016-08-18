@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/repo_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/repo_icon_content_description"
+        android:tint="@color/gray"
+        app:srcCompat="@drawable/ic_repo" />
+
+    <TextView
+        android:id="@+id/repo_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/repo_icon"
+        android:layout_toRightOf="@id/repo_icon"
+        android:ellipsize="end"
+        android:paddingBottom="4dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        tools:text="Plastix/KotlinBoilerplate" />
+
+    <TextView
+        android:id="@+id/repo_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/repo_name"
+        android:layout_toEndOf="@id/repo_icon"
+        android:layout_toRightOf="@id/repo_icon"
+        android:ellipsize="end"
+        android:paddingBottom="4dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:singleLine="true"
+        android:textSize="14sp"
+        tools:text="Kotlin Android Boilerplate project with MVP architecture using RxJava, Dagger 2, and more!" />
+
+</RelativeLayout>

@@ -1,0 +1,146 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+        applicationId "io.github.plastix.kotlinboilerplate"
+
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 1
+        versionName "0.5"
+
+        // Enable VectorDrawableCompat for API < 21
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
+        release {
+            applicationIdSuffix '.release'
+            signingConfig signingConfigs.release
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        // Main source set is Kotlin!
+        main.java.srcDirs += 'src/main/kotlin'
+
+        // Unit tests live in src/unitTest.
+        test.java.srcDir 'src/unitTests/kotlin'
+
+        // Integration tests live in src/integrationTest.
+        test.java.srcDir 'src/integrationTests/kotlin'
+
+        // Unit tests for debug build type specific code live in src/debugUnitTest.
+        testDebug.java.srcDir 'src/debugUnitTests/kotlin'
+
+        // Unit tests for release build type specific code live in src/releaseUnitTest.
+        testRelease.java.srcDir 'src/releaseUnitTests/kotlin'
+
+        // Functional tests live in src/functionalTests.
+        androidTest.java.srcDir 'src/functionalTests/kotlin'
+    }
+
+    lintOptions {
+        warningsAsErrors false
+        abortOnError true // Fail early.
+
+        lintConfig file("lint.xml")
+    }
+
+    // Show all test output in the command line!
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            exceptionFormat 'full'
+        }
+    }
+}
+
+// Required for annotation processing plugins like Dagger
+kapt {
+    generateStubs = true
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Google Support Libraries
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+
+    // RxJava
+    compile 'io.reactivex:rxjava:1.1.8'
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxkotlin:0.60.0' // RxJava bindings for Kotlin
+
+    // Dagger 2
+    kapt 'com.google.dagger:dagger-compiler:2.6'
+    compile 'com.google.dagger:dagger:2.6'
+
+    // Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
+
+    // Paperparcel
+    compile 'com.github.grandstaish.paperparcel:paperparcel:1.0.0'
+    compile 'com.github.grandstaish.paperparcel:paperparcel-kotlin:1.0.0'
+    kapt 'com.github.grandstaish.paperparcel:compiler:1.0.0'
+
+    // Misc
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.timber:timber:4.1.2'
+
+    // Unit Testing
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.10.19"
+    testCompile "com.nhaarman:mockito-kotlin:0.5.2" // Mockito bindings for Kotlin
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+// Signing Config code
+// From https://gist.github.com/gabrielemariotti/6856974
+def Properties props = new Properties()
+def propFile = new File('signing.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+
+    if (props != null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
+}
+
