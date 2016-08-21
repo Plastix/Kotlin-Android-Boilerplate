@@ -17,6 +17,10 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
     protected val subscriptions: CompositeSubscription = CompositeSubscription()
     private val viewState: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
+    init {
+        viewState.onNext(false)
+    }
+
     @CallSuper
     override fun bindView(view: V) {
         super.bindView(view)
@@ -40,7 +44,7 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
         subscriptions.clear()
     }
 
-    protected fun addSubscription(subscription: Subscription) {
+    fun addSubscription(subscription: Subscription) {
         subscriptions += subscription
     }
 
@@ -48,7 +52,7 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
      * Returns an Observable which omits the current state of the view. This observable emits
      * true when the view is attached and false when it is detached.
      */
-    private fun getViewState(): Observable<Boolean> = viewState
+    fun getViewState(): Observable<Boolean> = viewState
 
 
     /**
