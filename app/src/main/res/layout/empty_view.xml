@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/list_no_repos_icon_description"
         android:tint="@color/gray_light"
-        app:srcCompat="@drawable/ic_github"
+        app:srcCompat="@drawable/ic_github_24dp_black"
         tools:ignore="MissingPrefix"/>
 
     <TextView

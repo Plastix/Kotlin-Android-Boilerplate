@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/repo_icon_content_description"
         android:tint="@color/gray"
-        app:srcCompat="@drawable/ic_repo" />
+        app:srcCompat="@drawable/ic_repo_12dp_black" />
 
     <TextView
         android:id="@+id/repo_name"

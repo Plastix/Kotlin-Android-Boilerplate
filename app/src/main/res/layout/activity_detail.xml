@@ -68,7 +68,7 @@
                 android:layout_height="20dp"
                 android:contentDescription="@string/repo_star_icon_content_description"
                 android:tint="@color/gray"
-                app:srcCompat="@drawable/ic_star" />
+                app:srcCompat="@drawable/ic_star_24dp_black" />
 
             <TextView
                 android:id="@+id/detailStarCount"
@@ -88,7 +88,7 @@
                 android:layout_marginStart="16dp"
                 android:contentDescription="@string/repo_fork_icon_content_description"
                 android:tint="@color/gray"
-                app:srcCompat="@drawable/ic_repo_fork" />
+                app:srcCompat="@drawable/ic_repo_fork_10dp_black" />
 
             <TextView
                 android:id="@+id/detailForkCount"
