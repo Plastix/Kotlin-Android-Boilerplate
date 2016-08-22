@@ -89,12 +89,7 @@ class ListActivity : PresenterActivity<ListView, ListPresenter>(), ListView {
     }
 
     override fun stopLoading() {
-        // TODO: Post fix required due to Support V4 bug
-        // Will be fixed in 24.2.0
-        // See https://code.google.com/p/android/issues/detail?id=77712
-        listSwipeRefresh.post {
-            listSwipeRefresh.isRefreshing = false
-        }
+        listSwipeRefresh.isRefreshing = false
     }
 
     override fun updateList(repos: List<Repo>) {
