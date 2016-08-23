@@ -6,7 +6,7 @@
 
 An MVP Boilerplate Android project written in [Kotlin](https://kotlinlang.org/). This sample
 application fetches the top starred Kotlin repositories from Github and displays them. Inspired by
-@hitherejoe's [Android-Boilerplate](https://github.com/hitherejoe/Android-Boilerplate).
+@hitherejoe's [Android-Boilerplate](https://github.com/hitherejoe/Android-Boilerplate) project.
 
 ## Screenshots
 <img src="art/screenshots/list.png" width="49%" />
@@ -90,3 +90,7 @@ This makes your application much easier to test.
 By default Kotlin classes are closed (`final`). This makes them hard to mock unless you use a tool like
 [Powermock](https://github.com/jayway/powermock). I'd rather just mock interfaces with [Mockito](http://mockito.org/)
 than go through the hassle of using Powermock.
+
+## Attributions
+- [Kotlin Logo](http://instantlogosearch.com/kotlin)
+- [Github Icons](https://octicons.github.com/)
