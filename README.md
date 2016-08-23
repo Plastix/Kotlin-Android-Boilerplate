@@ -11,6 +11,9 @@ application fetches the top starred Kotlin repositories from Github and displays
 <img src="art/screenshots/list.png" width="49%" />
 <img src="art/screenshots/detail.png" width="49%" />
 
+<img src="art/screenshots/list_night.png" width="49%" />
+<img src="art/screenshots/detail_night.png" width="49%" />
+
 ## Libraries
 * [Dagger 2](http://google.github.io/dagger/)
 * [RxJava](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
