@@ -5,7 +5,8 @@
 </p>
 
 An MVP Boilerplate Android project written in [Kotlin](https://kotlinlang.org/). This sample
-application fetches the top starred Kotlin repositories from Github and displays them.
+application fetches the top starred Kotlin repositories from Github and displays them. Inspired by
+@hitherejoe's [Android-Boilerplate](https://github.com/hitherejoe/Android-Boilerplate).
 
 ## Screenshots
 <img src="art/screenshots/list.png" width="49%" />
