@@ -7,4 +7,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_night"
+        android:title="Enable Night Mode"/>
+
+    <item
+        android:id="@+id/action_day"
+        android:title="Enable Day Mode"/>
 </menu>

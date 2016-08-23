@@ -1,6 +1,7 @@
 package io.github.plastix.kotlinboilerplate.ui.list
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -125,6 +126,19 @@ class ListActivity : PresenterActivity<ListView, ListPresenter>(), ListView {
                 Timber.d("Settings menu clicked!")
                 true
             }
+
+            R.id.action_night -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                recreate()
+                true
+            }
+
+            R.id.action_day -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                recreate()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

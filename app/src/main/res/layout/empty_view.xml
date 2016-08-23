@@ -16,7 +16,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/list_no_repos_icon_description"
-        android:tint="@color/gray_light"
+        android:tint="@color/gray"
         app:srcCompat="@drawable/ic_github_24dp_black"
         tools:ignore="MissingPrefix"/>
 
