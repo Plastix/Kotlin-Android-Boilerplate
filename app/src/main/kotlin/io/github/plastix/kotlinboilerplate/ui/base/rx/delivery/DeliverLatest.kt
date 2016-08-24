@@ -1,6 +1,7 @@
 package io.github.plastix.kotlinboilerplate.ui.base.rx.delivery
 
 import rx.Observable
+import rx.lang.kotlin.filterNotNull
 
 /**
  * {@link rx.Observable.Transformer} that couples data and view status
@@ -27,31 +28,24 @@ class DeliverLatest<T>(private val view: Observable<Boolean>) : Observable.Trans
                 view,
                 // Materialize data Observable to handle onError and onCompleted events when view is detached
                 observable.materialize()
-                        // Keep the last two notifications
-                        .buffer(2, 1)
-                        .delay { notifications ->
-                            if (notifications.last().isOnCompleted) {
-                                view.filter { value -> value }
+                        .delay { notification ->
+                            // Delay completed notifications until the view reattaches
+                            if (notification.isOnCompleted) {
+                                view.first { it }
                             } else {
-                                Observable.just(true)
+                                // Pass all other events downstream immediately
+                                // They will be "cached" by combineLatest
+                                Observable.empty()
                             }
                         }
-                        // If the last received notification is onCompleted then delay
-                        // emission of previous onNext and onCompleted notification until view is attached
-                        .scan { notifications, notifications2 ->
-                            if (notifications == null) {
-                                // If it is first buffer of notifications emit it as usual
-                                notifications2
-                            } else {
-                                // Otherwise remove first element from buffer since it is
-                                // already emitted as last element of the previous buffer
-                                notifications2.subList(1, notifications2.size)
-                            }
-                        } // Remove duplicate notifications caused by sliding buffer
-                        .flatMap { notifications -> Observable.from(notifications) }
-                // Flatten emitted buffers
-        ) { flag, notification -> if (flag) notification else null }
-                .filter { it != null }
-                .dematerialize<T>()
+        ) {
+            // Pass notification downstream if view is attached, otherwise null
+            isViewAttached, notification ->
+            if (isViewAttached) notification else null
+        }
+                //  Filter out null events to ensure we only emit when the view is attached
+                .filterNotNull()
+                // Convert our notifications back into values
+                .dematerialize()
     }
 }
