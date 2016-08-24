@@ -52,7 +52,7 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
      * Returns an Observable which omits the current state of the view. This observable emits
      * true when the view is attached and false when it is detached.
      */
-    fun getViewState(): Observable<Boolean> = viewState
+    fun getViewState(): Observable<Boolean> = viewState.asObservable()
 
 
     /**
