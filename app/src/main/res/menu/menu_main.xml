@@ -10,9 +10,9 @@
 
     <item
         android:id="@+id/action_night"
-        android:title="Enable Night Mode"/>
+        android:title="@string/action_enable_night_mode"/>
 
     <item
         android:id="@+id/action_day"
-        android:title="Enable Day Mode"/>
+        android:title="@string/action_enable_day_mode"/>
 </menu>

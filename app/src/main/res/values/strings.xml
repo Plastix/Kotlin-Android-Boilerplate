@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">KotlinBoilerplate</string>
     <string name="action_settings">Settings</string>
+    <string name="action_enable_day_mode">Enable Day Mode</string>
+    <string name="action_enable_night_mode">Enable Night Mode</string>
 
     <string name="list_no_repos">No downloaded repos!</string>
     <string name="list_no_repos_icon_description">Github Logo</string>
