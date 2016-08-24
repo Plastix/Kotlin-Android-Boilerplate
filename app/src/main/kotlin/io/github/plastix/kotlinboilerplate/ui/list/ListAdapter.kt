@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import io.github.plastix.kotlinboilerplate.R
 import io.github.plastix.kotlinboilerplate.data.remote.model.Repo
 import io.github.plastix.kotlinboilerplate.extensions.inflateLayout
+import io.github.plastix.kotlinboilerplate.ui.ActivityScope
 import kotlinx.android.synthetic.main.item_repo.view.*
 import java.util.*
 import javax.inject.Inject
 
+@ActivityScope
 class ListAdapter @Inject constructor() : RecyclerView.Adapter<ListAdapter.RepoViewHolder>() {
 
     private var repos: List<Repo>
