@@ -27,11 +27,6 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     }
 
     @CallSuper
-    protected fun onPresenterDestroyed() {
-        presenter.onDestroy()
-    }
-
-    @CallSuper
     override fun onStart() {
         super.onStart()
         presenter.bindView(getViewLayer())
@@ -41,13 +36,6 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     override fun onStop() {
         super.onStop()
         presenter.unbindView()
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-        if (isFinishing)
-            onPresenterDestroyed()
     }
 
     protected fun getViewLayer(): V {
@@ -69,7 +57,5 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     }
 
     override fun onLoaderReset(loader: Loader<T>?) {
-        onPresenterDestroyed()
     }
-
 }
