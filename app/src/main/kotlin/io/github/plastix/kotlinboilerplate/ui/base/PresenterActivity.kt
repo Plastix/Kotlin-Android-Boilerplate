@@ -28,7 +28,7 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
 
     @CallSuper
     protected fun onPresenterDestroyed() {
-        presenter.onDestroy()
+        // Hook for subclasses
     }
 
     @CallSuper
@@ -41,13 +41,6 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     override fun onStop() {
         super.onStop()
         presenter.unbindView()
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-        if (isFinishing)
-            onPresenterDestroyed()
     }
 
     protected fun getViewLayer(): V {

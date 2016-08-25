@@ -38,7 +38,7 @@ abstract class PresenterFragment<V : MvpView, T : Presenter<V>> : BaseFragment()
 
     @CallSuper
     protected fun onPresenterDestroyed() {
-        presenter.onDestroy()
+        // Hook for subclasses
     }
 
     @CallSuper
@@ -56,14 +56,6 @@ abstract class PresenterFragment<V : MvpView, T : Presenter<V>> : BaseFragment()
     protected fun getViewLayer(): V {
         @Suppress("UNCHECKED_CAST")
         return this as V
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-        if (activity.isFinishing) {
-            presenter.onDestroy()
-        }
     }
 
     override fun onLoadFinished(loader: Loader<T>?, presenter: T) {
