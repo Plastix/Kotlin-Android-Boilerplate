@@ -26,6 +26,9 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
         this.presenter = presenter
     }
 
+    protected fun onPresenterDestroyed() {
+    }
+
     @CallSuper
     override fun onStart() {
         super.onStart()
@@ -57,5 +60,6 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     }
 
     override fun onLoaderReset(loader: Loader<T>?) {
+        onPresenterDestroyed()
     }
 }
