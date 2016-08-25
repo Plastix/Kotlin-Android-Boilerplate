@@ -8,7 +8,7 @@ import rx.schedulers.Schedulers
 import rx.schedulers.TestScheduler
 import java.util.concurrent.TimeUnit
 
-class DeliverLatestTest {
+class DeliverFirstTest {
 
     companion object {
         val TIME_DELAY_MS = 5000L
@@ -26,7 +26,7 @@ class DeliverLatestTest {
     @Test
     fun emitsSingleItemWhenViewIsAttached() {
         val view = Observable.just(true)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0)
                 .compose(transformer)
@@ -38,38 +38,37 @@ class DeliverLatestTest {
     }
 
     @Test
-    fun emitsTwoItemsWhenViewIsAttached() {
+    fun emitsFirstOfTwoItemsWhenViewIsAttached() {
         val view = Observable.just(true)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1)
                 .compose(transformer)
                 .subscribe(testSubscriber)
 
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertValues(0, 1)
+        testSubscriber.assertValues(0)
         testSubscriber.assertCompleted()
     }
 
     @Test
-    fun emitsThreeItemsWhenViewIsAttached() {
+    fun emitsFirstOfThreeItemsWhenViewIsAttached() {
         val view = Observable.just(true)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1, 2)
                 .compose(transformer)
                 .subscribe(testSubscriber)
 
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertValues(0, 1, 2)
+        testSubscriber.assertValues(0)
         testSubscriber.assertCompleted()
     }
-
 
     @Test
     fun noEmissionSingleItemWhenViewIsDetached() {
         val view = Observable.just(false)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0)
                 .compose(transformer)
@@ -82,7 +81,7 @@ class DeliverLatestTest {
     @Test
     fun noEmissionTwoItemsWhenViewIsDetached() {
         val view = Observable.just(false)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1)
                 .compose(transformer)
@@ -95,7 +94,7 @@ class DeliverLatestTest {
     @Test
     fun noEmissionThreeItemsWhenViewIsDetached() {
         val view = Observable.just(false)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1, 2)
                 .compose(transformer)
@@ -105,11 +104,10 @@ class DeliverLatestTest {
         testSubscriber.assertNoValues()
     }
 
-
     @Test
     fun noEmissionSingleItemWhenViewIsNeverAttached() {
         val view = Observable.never<Boolean>()
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0)
                 .compose(transformer)
@@ -122,7 +120,7 @@ class DeliverLatestTest {
     @Test
     fun noEmissionTwoItemsWhenViewIsNeverAttached() {
         val view = Observable.never<Boolean>()
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1)
                 .compose(transformer)
@@ -132,11 +130,10 @@ class DeliverLatestTest {
         testSubscriber.assertNoValues()
     }
 
-
     @Test
     fun noEmissionThreeItemsWhenViewIsNeverAttached() {
         val view = Observable.never<Boolean>()
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1, 2)
                 .compose(transformer)
@@ -147,10 +144,10 @@ class DeliverLatestTest {
     }
 
     @Test
-    fun emitsLastSingleItemWhenViewReattaches() {
+    fun emitsFirstSingleItemWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0)
                 .compose(transformer)
@@ -166,10 +163,10 @@ class DeliverLatestTest {
     }
 
     @Test
-    fun emitsLastOfTwoItemsWhenViewReattaches() {
+    fun emitsFirstOfTwoItemsWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1)
                 .compose(transformer)
@@ -180,7 +177,7 @@ class DeliverLatestTest {
         testSubscriber.assertNotCompleted()
         testScheduler.advanceTimeBy(TIME_DELAY_MS, TimeUnit.MILLISECONDS)
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertValue(1)
+        testSubscriber.assertValue(0)
         testSubscriber.assertCompleted()
     }
 
@@ -188,7 +185,7 @@ class DeliverLatestTest {
     fun emitsLastOfThreeItemsWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just(0, 1, 2)
                 .compose(transformer)
@@ -199,14 +196,14 @@ class DeliverLatestTest {
         testSubscriber.assertNotCompleted()
         testScheduler.advanceTimeBy(TIME_DELAY_MS, TimeUnit.MILLISECONDS)
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertValue(2)
+        testSubscriber.assertValue(0)
         testSubscriber.assertCompleted()
     }
 
     @Test
     fun emitsErrorWhenViewIsAttached() {
         val view = Observable.just(true)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.error<Int>(Throwable())
                 .compose(transformer)
@@ -219,7 +216,7 @@ class DeliverLatestTest {
     @Test
     fun noErrorEmittedWhenViewIsDetached() {
         val view = Observable.just(false)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.error<Int>(Throwable())
                 .compose(transformer)
@@ -231,7 +228,7 @@ class DeliverLatestTest {
     @Test
     fun noErrorEmittedWhenViewNeverAttached() {
         val view = Observable.never<Boolean>()
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.error<Int>(Throwable())
                 .compose(transformer)
@@ -261,7 +258,7 @@ class DeliverLatestTest {
     fun emitErrorAfterItemsWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just("0", "1", "2", "error")
                 .map { it.toInt() }
@@ -273,15 +270,15 @@ class DeliverLatestTest {
         testSubscriber.assertNoValues()
         testScheduler.advanceTimeBy(TIME_DELAY_MS, TimeUnit.MILLISECONDS)
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertNoValues()
-        testSubscriber.assertError(Throwable::class.java)
+        testSubscriber.assertValue(0)
+        testSubscriber.assertNoErrors()
     }
 
     @Test
     fun emitErrorBeforeItemsWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just("error", "0", "1", "2")
                 .map { it.toInt() }
@@ -301,7 +298,7 @@ class DeliverLatestTest {
     fun emitsErrorInBetweenItemsWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.just("0", "error", "1", "2")
                 .map { it.toInt() }
@@ -312,14 +309,14 @@ class DeliverLatestTest {
         testSubscriber.assertNoErrors()
         testScheduler.advanceTimeBy(TIME_DELAY_MS, TimeUnit.MILLISECONDS)
         testSubscriber.awaitTerminalEvent()
-        testSubscriber.assertNoValues()
-        testSubscriber.assertError(Throwable::class.java)
+        testSubscriber.assertValue(0)
+        testSubscriber.assertNoErrors()
     }
 
     @Test
     fun emitsCompleteWhenViewIsAttached() {
         val view = Observable.just(true)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.empty<Int>()
                 .compose(transformer)
@@ -333,7 +330,7 @@ class DeliverLatestTest {
     @Test
     fun noCompleteEmissionWhenViewIsDetached() {
         val view = Observable.just(false)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.empty<Int>()
                 .compose(transformer)
@@ -347,7 +344,7 @@ class DeliverLatestTest {
     fun emitsCompleteWhenViewReattaches() {
         val view = Observable.just(true)
                 .delay(TIME_DELAY_MS, TimeUnit.MILLISECONDS, testScheduler)
-        val transformer = DeliverLatest<Int>(view)
+        val transformer = DeliverFirst<Int>(view)
 
         Observable.empty<Int>()
                 .compose(transformer)
