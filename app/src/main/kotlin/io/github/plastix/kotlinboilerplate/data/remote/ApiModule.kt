@@ -8,14 +8,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApiModule {
+object ApiModule {
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideApiService(retrofit: Retrofit): GithubApiService {
         return retrofit.create(GithubApiService::class.java)
     }
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideRetrofit(rxJavaCallAdapterFactory: RxJavaCallAdapterFactory,
                         gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
@@ -26,12 +26,12 @@ class ApiModule {
 
     }
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideRxJavaCallAdapter(): RxJavaCallAdapterFactory {
         return RxJavaCallAdapterFactory.create()
     }

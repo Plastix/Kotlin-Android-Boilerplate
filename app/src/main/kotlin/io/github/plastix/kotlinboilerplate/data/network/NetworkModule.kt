@@ -8,13 +8,13 @@ import io.github.plastix.kotlinboilerplate.ApplicationQualifier
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideConnectivityManager(@ApplicationQualifier context: Context): ConnectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    @Provides @Singleton
+    @Provides @Singleton @JvmStatic
     fun provideNetworkInteractor(networkInteractorImpl: NetworkInteractorImpl): NetworkInteractor = networkInteractorImpl
 
 }
