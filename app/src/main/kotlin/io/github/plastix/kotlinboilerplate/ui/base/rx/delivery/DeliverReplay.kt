@@ -11,7 +11,11 @@ class DeliverReplay<T>(private val view: Observable<Boolean>) : Observable.Trans
     override fun call(observable: Observable<T>): Observable<T> {
         val subject = ReplaySubject.create<T>()
         val subscription = observable.subscribe(subject)
-        return view.switchMap { flag -> if (flag) subject else Observable.empty<T>() }
-                .doOnUnsubscribe { subscription.unsubscribe() }
+        return view.switchMap {
+            flag ->
+            if (flag) subject else Observable.never<T>()
+        }.doOnUnsubscribe {
+            subscription.unsubscribe()
+        }
     }
 }
