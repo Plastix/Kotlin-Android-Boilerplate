@@ -42,14 +42,14 @@ abstract class PresenterFragment<V : MvpView, T : Presenter<V>> : BaseFragment()
     }
 
     @CallSuper
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         presenter.bindView(getViewLayer())
     }
 
     @CallSuper
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         presenter.unbindView()
     }
 
