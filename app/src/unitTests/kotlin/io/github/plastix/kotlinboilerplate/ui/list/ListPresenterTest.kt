@@ -5,20 +5,20 @@ import io.github.plastix.kotlinboilerplate.data.remote.GithubApiService
 import io.github.plastix.kotlinboilerplate.data.remote.model.Owner
 import io.github.plastix.kotlinboilerplate.data.remote.model.Repo
 import io.github.plastix.kotlinboilerplate.data.remote.model.SearchResponse
-import io.github.plastix.kotlinboilerplate.util.RxSchedulersOverrideRule
+import io.github.plastix.rxschedulerrule.RxSchedulerRule
+import io.reactivex.Completable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import rx.Completable
-import rx.Single
 
 class ListPresenterTest {
 
     @get:Rule @Suppress("unused")
-    val schedulerRule: RxSchedulersOverrideRule = RxSchedulersOverrideRule()
+    val schedulerRule: RxSchedulerRule = RxSchedulerRule()
 
     @Mock
     lateinit var apiService: GithubApiService
@@ -76,7 +76,7 @@ class ListPresenterTest {
     }
 
     @Test
-    fun getKotlinRepos_shoulErrorWithFetchMessage() {
+    fun getKotlinRepos_shouldErrorWithFetchMessage() {
         Mockito.`when`(networkInteractor.hasNetworkConnectionCompletable())
                 .thenReturn(Completable.complete())
 

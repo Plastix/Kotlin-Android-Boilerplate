@@ -1,7 +1,7 @@
 package io.github.plastix.kotlinboilerplate.data.network
 
 import android.net.ConnectivityManager
-import rx.Completable
+import io.reactivex.Completable
 import javax.inject.Inject
 import javax.inject.Singleton
 

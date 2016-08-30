@@ -2,13 +2,13 @@ package io.github.plastix.kotlinboilerplate.data.network
 
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import io.reactivex.Completable
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import rx.Completable
 
 class NetworkInteractorTest {
 
@@ -59,6 +59,6 @@ class NetworkInteractorTest {
     fun hasNetworkConnectionCompletable_shouldErrorWhenNotConnected() {
         Mockito.`when`(networkInfo.isConnectedOrConnecting).thenReturn(false)
 
-        Assert.assertTrue(networkInteractor.hasNetworkConnectionCompletable().get() is NetworkInteractor.NetworkUnavailableException)
+        Assert.assertTrue(networkInteractor.hasNetworkConnectionCompletable().blockingGet() is NetworkInteractor.NetworkUnavailableException)
     }
 }

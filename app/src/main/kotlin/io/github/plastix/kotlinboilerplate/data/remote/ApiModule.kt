@@ -1,9 +1,9 @@
 package io.github.plastix.kotlinboilerplate.data.remote
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -16,7 +16,7 @@ class ApiModule {
     }
 
     @Provides @Singleton
-    fun provideRetrofit(rxJavaCallAdapterFactory: RxJavaCallAdapterFactory,
+    fun provideRetrofit(rxJavaCallAdapterFactory: RxJava2CallAdapterFactory,
                         gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(ApiConstants.GITHUB_API_BASE_ENDPOINT)
@@ -32,8 +32,8 @@ class ApiModule {
     }
 
     @Provides @Singleton
-    fun provideRxJavaCallAdapter(): RxJavaCallAdapterFactory {
-        return RxJavaCallAdapterFactory.create()
+    fun provideRxJavaCallAdapter(): RxJava2CallAdapterFactory {
+        return RxJava2CallAdapterFactory.create()
     }
 
 }
