@@ -1,5 +1,6 @@
 package io.github.plastix.kotlinboilerplate.ui.base.rx.delivery
 
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import rx.Observable
@@ -355,5 +356,53 @@ class DeliverReplayTest {
         testScheduler.advanceTimeBy(TIME_DELAY_MS, TimeUnit.MILLISECONDS)
         testSubscriber.awaitTerminalEvent()
         testSubscriber.assertCompleted()
+    }
+
+    @Test
+    fun noItemsEmittedFromSourceBeforeSubscription() {
+        val view = Observable.just(true)
+        val transformer = DeliverReplay<Int>(view)
+
+        var emitted = false // Flag required since doOnEach swallows errors
+        Observable.just(0, 1, 2).doOnNext {
+            emitted = true
+        }.compose(transformer)
+
+        if (emitted) {
+            Assert.fail("Source emitted items before downstream observable was subscribed to!")
+        }
+
+    }
+
+    @Test
+    fun noErrorEmittedFromSourceBeforeSubscription() {
+        val view = Observable.just(true)
+        val transformer = DeliverReplay<Int>(view)
+
+        var emitted = false
+        Observable.error<Int>(Throwable()).doOnError {
+            emitted = true
+        }.compose(transformer)
+
+        if (emitted) {
+            Assert.fail("Source emitted error before downstream observable was subscribed to!")
+        }
+
+    }
+
+    @Test
+    fun noCompletionEmittedFromSourceBeforeSubscription() {
+        val view = Observable.just(true)
+        val transformer = DeliverReplay<Int>(view)
+
+        var emitted = false
+        Observable.empty<Int>().doOnCompleted {
+            emitted = true
+        }.compose(transformer)
+
+        if (emitted) {
+            Assert.fail("Source emitted completion before downstream observable was subscribed to!")
+        }
+
     }
 }
