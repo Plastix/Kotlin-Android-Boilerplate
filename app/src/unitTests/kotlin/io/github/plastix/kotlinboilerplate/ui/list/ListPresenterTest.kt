@@ -1,9 +1,5 @@
 package io.github.plastix.kotlinboilerplate.ui.list
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.github.plastix.kotlinboilerplate.data.network.NetworkInteractor
 import io.github.plastix.kotlinboilerplate.data.remote.GithubApiService
 import io.github.plastix.kotlinboilerplate.data.remote.model.Owner
@@ -14,6 +10,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import rx.Completable
 import rx.Single
@@ -44,55 +41,55 @@ class ListPresenterTest {
 
     @Test
     fun getKotlinRepos_shouldUpdateViewWithApiData() {
-        whenever(networkInteractor.hasNetworkConnectionCompletable())
+        Mockito.`when`(networkInteractor.hasNetworkConnectionCompletable())
                 .thenReturn(Completable.complete())
 
         val repos: List<Repo> = listOf(mockRepo(), mockRepo())
         val response: SearchResponse = SearchResponse(0, repos)
-        whenever(apiService.repoSearch(any(), any(), any()))
+        Mockito.`when`(apiService.repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Single.just(response))
 
         presenter.getKotlinRepos()
 
-        verify(apiService).repoSearch(any(), any(), any())
-        verify(networkInteractor).hasNetworkConnectionCompletable()
-        verify(view, times(1)).startLoading()
-        verify(view, times(1)).updateList(repos)
+        Mockito.verify(apiService).repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
+        Mockito.verify(view, Mockito.times(1)).startLoading()
+        Mockito.verify(view, Mockito.times(1)).updateList(repos)
     }
 
     @Test
     fun getKotlinRepos_shouldErrorWithNetworkMessage() {
-        whenever(networkInteractor.hasNetworkConnectionCompletable())
+        Mockito.`when`(networkInteractor.hasNetworkConnectionCompletable())
                 .thenReturn(
                         Completable.error(NetworkInteractor.NetworkUnavailableException())
                 )
 
         val response: SearchResponse = SearchResponse(0, listOf(mockRepo()))
-        whenever(apiService.repoSearch(any(), any(), any()))
+        Mockito.`when`(apiService.repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Single.just(response))
 
         presenter.getKotlinRepos()
 
-        verify(networkInteractor).hasNetworkConnectionCompletable()
-        verify(view, times(1)).startLoading()
-        verify(view, times(1)).errorNoNetwork()
+        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
+        Mockito.verify(view, Mockito.times(1)).startLoading()
+        Mockito.verify(view, Mockito.times(1)).errorNoNetwork()
     }
 
     @Test
     fun getKotlinRepos_shoulErrorWithFetchMessage() {
-        whenever(networkInteractor.hasNetworkConnectionCompletable())
+        Mockito.`when`(networkInteractor.hasNetworkConnectionCompletable())
                 .thenReturn(Completable.complete())
 
-        whenever(apiService.repoSearch(any(), any(), any()))
+        Mockito.`when`(apiService.repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Single.error(Throwable("Error")))
 
 
         presenter.getKotlinRepos()
 
-        verify(apiService).repoSearch(any(), any(), any())
-        verify(networkInteractor).hasNetworkConnectionCompletable()
-        verify(view, times(1)).startLoading()
-        verify(view, times(1)).errorFetchRepos()
+        Mockito.verify(apiService).repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
+        Mockito.verify(view, Mockito.times(1)).startLoading()
+        Mockito.verify(view, Mockito.times(1)).errorFetchRepos()
     }
 
     fun mockRepo() = Repo("", "", Owner("", ""), "", 0, 0)

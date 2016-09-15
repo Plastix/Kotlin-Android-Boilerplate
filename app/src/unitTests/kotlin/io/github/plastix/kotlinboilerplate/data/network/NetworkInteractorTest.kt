@@ -2,11 +2,11 @@ package io.github.plastix.kotlinboilerplate.data.network
 
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import rx.Completable
 
@@ -24,40 +24,40 @@ class NetworkInteractorTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         networkInteractor = NetworkInteractorImpl(connectivityManager)
-        whenever(connectivityManager.activeNetworkInfo).then { networkInfo }
+        Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(networkInfo)
     }
 
     @Test
     fun hasNetworkConnection_shouldReturnFalseWhenNoNetwork() {
-        whenever(connectivityManager.activeNetworkInfo).then { null }
+        Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(null)
 
         Assert.assertFalse(networkInteractor.hasNetworkConnection())
     }
 
     @Test
     fun `hasNetworkConnection_shouldReturnFalseWhenNotConnected`() {
-        whenever(networkInfo.isConnectedOrConnecting).then { false }
+        Mockito.`when`(networkInfo.isConnectedOrConnecting).thenReturn(false)
 
         Assert.assertFalse(networkInteractor.hasNetworkConnection())
     }
 
     @Test
     fun hasNetworkConnection_shouldReturnTrueWhenConnected() {
-        whenever(networkInfo.isConnectedOrConnecting).then { true }
+        Mockito.`when`(networkInfo.isConnectedOrConnecting).thenReturn(true)
 
         Assert.assertTrue(networkInteractor.hasNetworkConnection())
     }
 
     @Test
     fun hasNetworkConnectionCompletable_shouldCompleteWhenConnected() {
-        whenever(networkInfo.isConnectedOrConnecting).then { true }
+        Mockito.`when`(networkInfo.isConnectedOrConnecting).thenReturn(true)
 
         Assert.assertEquals(networkInteractor.hasNetworkConnectionCompletable(), Completable.complete())
     }
 
     @Test
     fun hasNetworkConnectionCompletable_shouldErrorWhenNotConnected() {
-        whenever(networkInfo.isConnectedOrConnecting).then { false }
+        Mockito.`when`(networkInfo.isConnectedOrConnecting).thenReturn(false)
 
         Assert.assertTrue(networkInteractor.hasNetworkConnectionCompletable().get() is NetworkInteractor.NetworkUnavailableException)
     }

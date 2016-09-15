@@ -1,19 +1,21 @@
 package io.github.plastix.kotlinboilerplate.ui.base
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 
 class AbstractPresenterTest {
 
+    @Mock
     lateinit var view: MvpView
     lateinit var presenter: PresenterSubclass
 
     @Before
     fun setUp() {
-        view = mock()
+        MockitoAnnotations.initMocks(this)
         presenter = PresenterSubclass()
     }
 
@@ -35,7 +37,7 @@ class AbstractPresenterTest {
     fun onDestroy_shouldNotModifyView() {
         presenter.onDestroy()
 
-        verifyZeroInteractions(view)
+        Mockito.verifyZeroInteractions(view)
     }
 
     class PresenterSubclass : AbstractPresenter<MvpView>() {
