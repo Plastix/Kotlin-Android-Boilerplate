@@ -91,6 +91,15 @@ By default Kotlin classes are closed (`final`). This makes them hard to mock unl
 [Powermock](https://github.com/jayway/powermock). I'd rather just mock interfaces with [Mockito](http://mockito.org/)
 than go through the hassle of using Powermock.
 
+#### How do I use this project?
+This is a boilerplate project aimed to help bootstrap new Kotlin applications. Feel free to fork this application
+or use this project [generator](https://github.com/ravidsrk/generator-kotlin-android-boilerplate). Don't
+forget to change the following things for your application:
+
+* Application ID (Gradle)
+* Application Name (String resource)
+* Package names
+
 ## Attributions
 - [Kotlin Logo](http://instantlogosearch.com/kotlin)
 - [Github Icons](https://octicons.github.com/)
