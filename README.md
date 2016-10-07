@@ -33,9 +33,9 @@ To compile and run the project you'll need:
 - [Android SDK](http://developer.android.com/sdk/index.html)
 - [Android N (API 24)](http://developer.android.com/tools/revisions/platforms.html)
 - Android SDK Tools
-- Android SDK Build Tools `24.0.0`
+- Android SDK Build Tools `24.0.2`
 - Android Support Repository
-- [Kotlin](https://kotlinlang.org/) `1.0.3`
+- [Kotlin](https://kotlinlang.org/) `1.0.4`
 - Kotlin plugin for Android Studio
 
 Building
