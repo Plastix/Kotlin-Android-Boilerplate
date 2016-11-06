@@ -33,9 +33,11 @@ class ListPresenterImpl @Inject constructor(private val apiService: GithubApiSer
                 .subscribe(object : SingleObserver<SearchResponse> {
                     override fun onSuccess(value: SearchResponse) {
                         view?.updateList(value.repos)
+                        networkRequest.dispose()
                     }
 
                     override fun onError(e: Throwable) {
+                        networkRequest.dispose()
                         when (e) {
                             is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
                             else -> view?.errorFetchRepos()
