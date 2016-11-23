@@ -94,7 +94,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile 'com.github.Plastix.RxSchedulerRule:rx2:1.0.2'
-    compile 'com.github.Plastix.RxDelay:rx2:rx2-SNAPSHOT'
+    compile 'com.github.Plastix.RxDelay:rx2:0.5.0'
 
     // Dagger 2
     kapt 'com.google.dagger:dagger-compiler:2.6'
