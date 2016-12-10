@@ -18,14 +18,6 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun ViewGroup.show() {
-    visibility = View.VISIBLE
-}
-
-fun ViewGroup.hide() {
-    visibility = View.GONE
-}
-
 fun Context.inflateLayout(layoutResId: Int): View {
     return inflateView(this, layoutResId, null, false)
 }
