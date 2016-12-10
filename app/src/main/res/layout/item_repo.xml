@@ -26,10 +26,10 @@
         android:paddingBottom="4dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
-        android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
-        tools:text="Plastix/KotlinBoilerplate" />
+        tools:text="Plastix/KotlinBoilerplate"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/repo_description"
@@ -42,8 +42,8 @@
         android:paddingBottom="4dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
-        android:singleLine="true"
         android:textSize="14sp"
-        tools:text="Kotlin Android Boilerplate project with MVP architecture using RxJava, Dagger 2, and more!" />
+        tools:text="Kotlin Android Boilerplate project with MVP architecture using RxJava, Dagger 2, and more!"
+        android:maxLines="1"/>
 
 </RelativeLayout>

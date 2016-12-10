@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "io.github.plastix.kotlinboilerplate"
 
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "0.5"
 
@@ -83,11 +83,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Google Support Libraries
-    compile 'com.android.support:support-v4:24.2.0'
-    compile 'com.android.support:support-fragment:24.2.0'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:support-fragment:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
 
     // RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.0.0'

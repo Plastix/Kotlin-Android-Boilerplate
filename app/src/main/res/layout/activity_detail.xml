@@ -77,9 +77,9 @@
                 android:ellipsize="end"
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
-                android:singleLine="true"
                 android:textSize="20sp"
-                tools:text="25" />
+                tools:text="25"
+                android:maxLines="1"/>
 
             <ImageView
                 android:layout_width="20dp"
@@ -97,9 +97,9 @@
                 android:ellipsize="end"
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
-                android:singleLine="true"
                 android:textSize="20sp"
-                tools:text="14" />
+                tools:text="14"
+                android:maxLines="1"/>
 
         </LinearLayout>
 
