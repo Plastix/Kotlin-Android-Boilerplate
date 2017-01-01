@@ -1,0 +1,15 @@
+machine:
+  java:
+    version: oraclejdk8
+  environment:
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3500m -XX:+HeapDumpOnOutOfMemoryError"'
+
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "platform-tools,tools,android-25,extra-android-support"
+    # Build tools should be installed after "tools", uh.
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.3"
+
+test:
+  override:
+    - sh ci.sh
