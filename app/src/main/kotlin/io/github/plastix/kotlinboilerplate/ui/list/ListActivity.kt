@@ -1,5 +1,6 @@
 package io.github.plastix.kotlinboilerplate.ui.list
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
@@ -8,25 +9,21 @@ import android.view.MenuItem
 import io.github.plastix.kotlinboilerplate.ApplicationComponent
 import io.github.plastix.kotlinboilerplate.R
 import io.github.plastix.kotlinboilerplate.data.remote.model.Repo
+import io.github.plastix.kotlinboilerplate.databinding.ActivityListBinding
 import io.github.plastix.kotlinboilerplate.extensions.hide
 import io.github.plastix.kotlinboilerplate.extensions.show
 import io.github.plastix.kotlinboilerplate.extensions.showSnackbar
-import io.github.plastix.kotlinboilerplate.ui.base.PresenterActivity
+import io.github.plastix.kotlinboilerplate.ui.base.ViewModelActivity
 import io.github.plastix.kotlinboilerplate.ui.detail.DetailActivity
 import io.github.plastix.kotlinboilerplate.ui.misc.SimpleDividerItemDecoration
-import kotlinx.android.synthetic.main.activity_list.*
-import kotlinx.android.synthetic.main.empty_view.*
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
-class ListActivity : PresenterActivity<ListView, ListPresenter>(), ListView {
-
-    companion object {
-        val ADAPTER_DATA_KEY = "REPOS_LIST"
-    }
+class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
 
     @Inject
-    lateinit var adapter: ListAdapter
+    lateinit var adapter: RepoAdapter
 
     @Inject
     lateinit var layoutManager: LinearLayoutManager
@@ -34,36 +31,51 @@ class ListActivity : PresenterActivity<ListView, ListPresenter>(), ListView {
     @Inject
     lateinit var dividerDecorator: SimpleDividerItemDecoration
 
+    val disposables: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
-        setSupportActionBar(listToolbar)
+        setSupportActionBar(binding.listToolbar)
+    }
+
+    override fun onBind() {
+        super.onBind()
+        binding.viewModel = viewModel
         setupRecyclerView()
         setupSwipeRefresh()
         updateEmptyView()
+
+        disposables.add(viewModel.getRepos().subscribe {
+            updateList(it)
+        })
+
+        disposables.add(viewModel.loadingState().subscribe {
+            binding.listSwipeRefresh.isRefreshing = it
+        })
+
+        disposables.add(viewModel.fetchErrors().subscribe {
+            errorFetchRepos()
+        })
+
+        disposables.add(viewModel.networkErrors().subscribe {
+            errorNoNetwork()
+        })
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(ADAPTER_DATA_KEY, adapter.getRepos())
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val repos: List<Repo> = savedInstanceState.getParcelableArrayList(ADAPTER_DATA_KEY)
-        updateList(repos)
+    override fun getViewBinding(): ActivityListBinding {
+        return DataBindingUtil.setContentView(this, R.layout.activity_list)
     }
 
     private fun setupSwipeRefresh() {
-        listSwipeRefresh.setOnRefreshListener {
-            presenter.getKotlinRepos()
+        binding.listSwipeRefresh.setOnRefreshListener {
+            viewModel.fetchRepos()
         }
     }
 
     private fun setupRecyclerView() {
-        listRecyclerView.adapter = adapter
-        listRecyclerView.layoutManager = layoutManager
-        listRecyclerView.addItemDecoration(dividerDecorator)
+        binding.listRecyclerView.adapter = adapter
+        binding.listRecyclerView.layoutManager = layoutManager
+        binding.listRecyclerView.addItemDecoration(dividerDecorator)
 
         adapter.setClickListener {
             onItemClick(it)
@@ -85,36 +97,30 @@ class ListActivity : PresenterActivity<ListView, ListPresenter>(), ListView {
         startActivity(DetailActivity.newIntent(this, repo))
     }
 
-    override fun startLoading() {
-        listSwipeRefresh.isRefreshing = true
-    }
-
-    override fun stopLoading() {
-        listSwipeRefresh.isRefreshing = false
-    }
-
-    override fun updateList(repos: List<Repo>) {
+    private fun updateList(repos: List<Repo>) {
         adapter.updateRepos(repos)
-        stopLoading()
         updateEmptyView()
     }
 
     private fun updateEmptyView() {
         if (adapter.itemCount == 0) {
-            empty_view.show()
+            binding.emptyView.root.show()
         } else {
-            empty_view.hide()
+            binding.emptyView.root.hide()
         }
     }
 
-    override fun errorNoNetwork() {
-        stopLoading()
-        listCoordinatorLayout.showSnackbar(R.string.list_error_no_network)
+    private fun errorNoNetwork() {
+        binding.listCoordinatorLayout.showSnackbar(R.string.list_error_no_network)
     }
 
-    override fun errorFetchRepos() {
-        stopLoading()
-        listCoordinatorLayout.showSnackbar(R.string.list_error_failed_fetch)
+    private fun errorFetchRepos() {
+        binding.listCoordinatorLayout.showSnackbar(R.string.list_error_failed_fetch)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposables.clear()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

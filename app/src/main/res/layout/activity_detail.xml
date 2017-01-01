@@ -1,108 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.detail.DetailActivity">
+<layout>
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <data>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/detailToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <variable
+            name="viewModel"
+            type="io.github.plastix.kotlinboilerplate.ui.detail.DetailViewModel"/>
+    </data>
 
-    </android.support.design.widget.AppBarLayout>
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                     xmlns:tools="http://schemas.android.com/tools"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent"
+                                                     android:fitsSystemWindows="true"
+                                                     tools:context=".ui.detail.DetailActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="32dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <ImageView
-            android:id="@+id/detailOwnerAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/detail_icon_content_description"
-            tools:background="@color/gray" />
-
-        <TextView
-            android:id="@+id/detailName"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
-            android:textSize="24sp"
-            tools:text="Plastix/Android-Kotlin-Boilerplate" />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/detailDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
-            tools:text="Kotlin Android Boilerplate project with MVP architecture using RxJava, Dagger 2, and more!" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/detailToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="32dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:contentDescription="@string/repo_star_icon_content_description"
-                android:tint="@color/gray"
-                app:srcCompat="@drawable/ic_star_24dp_black" />
+                android:id="@+id/detailOwnerAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/detail_icon_content_description"
+                android:src="@{viewModel.avatarURL}"
+                tools:background="@color/gray"/>
 
             <TextView
-                android:id="@+id/detailStarCount"
-                android:layout_width="wrap_content"
+                android:id="@+id/detailName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingEnd="4dp"
-                android:paddingStart="4dp"
-                android:textSize="20sp"
-                tools:text="25"
-                android:maxLines="1"/>
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/repo_fork_icon_content_description"
-                android:tint="@color/gray"
-                app:srcCompat="@drawable/ic_repo_fork_10dp_black" />
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:text="@{viewModel.name}"
+                android:textSize="24sp"
+                tools:text="Plastix/Android-Kotlin-Boilerplate"/>
 
             <TextView
-                android:id="@+id/detailForkCount"
-                android:layout_width="wrap_content"
+                android:id="@+id/detailDescription"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingEnd="4dp"
-                android:paddingStart="4dp"
-                android:textSize="20sp"
-                tools:text="14"
-                android:maxLines="1"/>
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="@{viewModel.description}"
+                tools:text="Kotlin Android Boilerplate project with MVP architecture using RxJava, Dagger 2, and more!"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/repo_star_icon_content_description"
+                    android:tint="@color/gray"
+                    app:srcCompat="@drawable/ic_star_24dp_black"/>
+
+                <TextView
+                    android:id="@+id/detailStarCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:text="@{viewModel.stars}"
+                    android:textSize="20sp"
+                    tools:text="25"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/repo_fork_icon_content_description"
+                    android:tint="@color/gray"
+                    app:srcCompat="@drawable/ic_repo_fork_10dp_black"/>
+
+                <TextView
+                    android:id="@+id/detailForkCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:text="@{viewModel.forks}"
+                    android:textSize="20sp"
+                    tools:text="14"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</layout>

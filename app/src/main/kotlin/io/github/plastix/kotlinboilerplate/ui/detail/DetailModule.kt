@@ -3,12 +3,12 @@ package io.github.plastix.kotlinboilerplate.ui.detail
 import android.support.v7.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
-import io.github.plastix.kotlinboilerplate.ui.ActivityScope
+import io.github.plastix.kotlinboilerplate.data.remote.model.Repo
 import io.github.plastix.kotlinboilerplate.ui.base.ActivityModule
 
 @Module
-class DetailModule(activity: AppCompatActivity) : ActivityModule(activity) {
+class DetailModule(activity: AppCompatActivity, val repo: Repo) : ActivityModule(activity) {
 
-    @Provides @ActivityScope
-    fun providePresenter(presenter: DetailPresenterImpl): DetailPresenter = presenter
+    @Provides
+    fun provideRepo(): Repo = repo
 }

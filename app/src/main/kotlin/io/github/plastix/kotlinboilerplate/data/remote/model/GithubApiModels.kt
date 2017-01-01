@@ -1,8 +1,7 @@
 package io.github.plastix.kotlinboilerplate.data.remote.model
 
+import android.os.Parcel
 import com.google.gson.annotations.SerializedName
-import nz.bradcampbell.paperparcel.PaperParcel
-import nz.bradcampbell.paperparcel.PaperParcelable
 
 data class SearchResponse(
 
@@ -13,7 +12,6 @@ data class SearchResponse(
         val repos: List<Repo>
 )
 
-@PaperParcel
 data class Repo(
 
         val name: String,
@@ -29,21 +27,33 @@ data class Repo(
         val stars: Int,
 
         val forks: Int
-) : PaperParcelable {
+) : DefaultParcelable {
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.write(name, fullName, owner, description, stars, forks)
+    }
+
     companion object {
-        @JvmField val CREATOR = PaperParcelable.Creator(Repo::class.java)
+        @JvmField val CREATOR = DefaultParcelable.generateCreator {
+            Repo(it.read(), it.read(), it.read(), it.read(), it.read(), it.read())
+        }
     }
 }
 
-@PaperParcel
 data class Owner(
         @SerializedName("login")
         val name: String,
 
         @SerializedName("avatar_url")
         val avatarUrl: String
-) : PaperParcelable {
+) : DefaultParcelable {
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.write(name, avatarUrl)
+    }
+
     companion object {
-        @JvmField val CREATOR = PaperParcelable.Creator(Owner::class.java)
+        @JvmField val CREATOR = DefaultParcelable.generateCreator {
+            Owner(it.read(), it.read())
+        }
     }
 }

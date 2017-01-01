@@ -16,11 +16,7 @@ import javax.inject.Inject
  */
 class SimpleDividerItemDecoration @Inject constructor(@ApplicationQualifier context: Context) : RecyclerView.ItemDecoration() {
 
-    private val divider: Drawable
-
-    init {
-        divider = ContextCompat.getDrawable(context, R.drawable.line_divider)
-    }
+    private val divider: Drawable = ContextCompat.getDrawable(context, R.drawable.line_divider)
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val left = parent.paddingLeft

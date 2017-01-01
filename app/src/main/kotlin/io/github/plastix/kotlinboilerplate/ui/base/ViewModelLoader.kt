@@ -6,29 +6,29 @@ import io.github.plastix.kotlinboilerplate.ui.ActivityScope
 import javax.inject.Inject
 import javax.inject.Provider
 
-class PresenterLoader<T : Presenter<*>> @Inject constructor(@ActivityScope context: Context,
-                                                            private val presenterFactory: Provider<T>) : Loader<T>(context) {
-    private var presenter: T? = null
+class ViewModelLoader<T : ViewModel> @Inject constructor(@ActivityScope context: Context,
+                                                         private val viewModelFactory: Provider<T>) : Loader<T>(context) {
+    private var viewModel: T? = null
 
     override fun onStartLoading() {
         super.onStartLoading()
 
-        if (presenter == null)
+        if (viewModel == null)
             forceLoad()
         else
-            deliverResult(presenter)
+            deliverResult(viewModel)
     }
 
     override fun onForceLoad() {
         super.onForceLoad()
-        presenter = presenterFactory.get()
+        viewModel = viewModelFactory.get()
 
-        deliverResult(presenter)
+        deliverResult(viewModel)
     }
 
     override fun onReset() {
         super.onReset()
 
-        presenter?.onDestroy()
+        viewModel?.onDestroy()
     }
 }

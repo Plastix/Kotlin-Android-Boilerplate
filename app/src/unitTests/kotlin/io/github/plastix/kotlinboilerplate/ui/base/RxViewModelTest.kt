@@ -1,32 +1,26 @@
-package io.github.plastix.kotlinboilerplate.ui.base.rx
+package io.github.plastix.kotlinboilerplate.ui.base
 
-import io.github.plastix.kotlinboilerplate.ui.base.MvpView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
 import io.reactivex.observers.TestObserver
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
-class RxPresenterTest {
+class RxViewModelTest {
 
-    @Mock
-    lateinit var view: MvpView
     lateinit var sub: TestObserver<Boolean>
-    lateinit var presenter: PresenterSubclass
+    lateinit var viewModel: ViewModelSubclass
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
         sub = TestObserver.create()
-        presenter = PresenterSubclass()
+        viewModel = ViewModelSubclass()
     }
 
     @Test
     fun noViewAttachedByDefault() {
-        presenter.getViewState().subscribe(sub)
+        viewModel.getViewState().subscribe(sub)
 
         sub.assertNoErrors()
         sub.assertNotComplete()
@@ -35,9 +29,9 @@ class RxPresenterTest {
 
     @Test
     fun bindViewUpdatesViewState() {
-        presenter.getViewState().subscribe(sub)
+        viewModel.getViewState().subscribe(sub)
 
-        presenter.bindView(view)
+        viewModel.bind()
 
         sub.assertNoErrors()
         sub.assertNotComplete()
@@ -46,9 +40,9 @@ class RxPresenterTest {
 
     @Test
     fun unbindViewUpdatesViewState() {
-        presenter.getViewState().subscribe(sub)
+        viewModel.getViewState().subscribe(sub)
 
-        presenter.unbindView()
+        viewModel.unbind()
 
         sub.assertNoErrors()
         sub.assertNotComplete()
@@ -57,30 +51,30 @@ class RxPresenterTest {
 
     @Test
     fun addSubscriptionUpdatesCompositeSubscription() {
-        Assert.assertTrue(presenter.getSubcriptions().size() == 0)
-        presenter.addDisposable(Disposables.empty())
-        Assert.assertTrue(presenter.getSubcriptions().size() == 1)
+        Assert.assertTrue(viewModel.getSubcriptions().size() == 0)
+        viewModel.addDisposable(Disposables.empty())
+        Assert.assertTrue(viewModel.getSubcriptions().size() == 1)
     }
 
     @Test
     fun onDestroyClearsSubscriptionsAndUpdatesView() {
-        presenter.getViewState().subscribe(sub)
+        viewModel.getViewState().subscribe(sub)
 
-        presenter.addDisposable(Disposables.empty())
+        viewModel.addDisposable(Disposables.empty())
 
-        Assert.assertTrue(presenter.getSubcriptions().size() == 1)
+        Assert.assertTrue(viewModel.getSubcriptions().size() == 1)
 
-        presenter.onDestroy()
+        viewModel.onDestroy()
 
         sub.assertNoErrors()
         sub.assertValues(false)
         sub.assertComplete()
 
-        Assert.assertTrue(presenter.getSubcriptions().size() == 0)
+        Assert.assertTrue(viewModel.getSubcriptions().size() == 0)
 
     }
 
-    class PresenterSubclass : RxPresenter<MvpView>() {
+    class ViewModelSubclass : RxViewModel() {
 
         fun getSubcriptions(): CompositeDisposable = disposables
     }

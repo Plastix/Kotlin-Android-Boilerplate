@@ -22,7 +22,7 @@ class ApplicationModule(private val app: KotlinBoilerplateApp) {
     fun provideResources(): Resources = app.resources
 
     @Provides @Singleton
-    fun provideLayoutInflator(@ApplicationQualifier context: Context): LayoutInflater {
+    fun provideLayoutInflater(@ApplicationQualifier context: Context): LayoutInflater {
         return LayoutInflater.from(context)
     }
 

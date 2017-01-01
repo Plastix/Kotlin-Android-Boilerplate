@@ -4,7 +4,7 @@
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_web.png" width="200">
 </p>
 
-An MVP Boilerplate Android project written in [Kotlin](https://kotlinlang.org/). This sample
+An MVVM Boilerplate Android project written in [Kotlin](https://kotlinlang.org/). This sample
 application fetches the top starred Kotlin repositories from Github and displays them. Inspired by
 @hitherejoe's [Android-Boilerplate](https://github.com/hitherejoe/Android-Boilerplate) project.
 
@@ -17,10 +17,9 @@ application fetches the top starred Kotlin repositories from Github and displays
 
 ## Libraries
 * [Dagger 2](http://google.github.io/dagger/)
-* [RxJava](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [RxJava 2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [Retrofit 2](http://square.github.io/retrofit/)
 * [Picasso](http://square.github.io/picasso/)
-* [PaperParcel](https://github.com/grandstaish/paperparcel)
 * [Google Support Libraries](http://developer.android.com/tools/support-library/index.html)
 
 ## Testing Libraries
@@ -35,7 +34,7 @@ To compile and run the project you'll need:
 - Android SDK Tools
 - Android SDK Build Tools `24.0.3`
 - Android Support Repository
-- [Kotlin](https://kotlinlang.org/) `1.0.5`
+- [Kotlin](https://kotlinlang.org/) `1.0.6`
 - Kotlin plugin for Android Studio
 
 Building
@@ -80,10 +79,6 @@ Running `./gradlew assembleRelease` will then build and sign a release version o
 In a nutshell, Kotlin throws all the bad parts of Java out the window and brings lots of great features from
 Java 8 and functional programming (Yet still compiling to Java 6 bytecode). Kotlin brings much needed language
 features to Android which is stuck on Java 6.
-
-#### Why MVP?
-MVP architecture lends itself to Android since it separates Android code from normal business logic.
-This makes your application much easier to test.
 
 #### What is with all the interfaces?
 

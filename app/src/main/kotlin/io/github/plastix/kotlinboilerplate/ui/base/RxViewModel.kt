@@ -1,31 +1,25 @@
-package io.github.plastix.kotlinboilerplate.ui.base.rx
+package io.github.plastix.kotlinboilerplate.ui.base
 
 import android.support.annotation.CallSuper
-import io.github.plastix.kotlinboilerplate.ui.base.AbstractPresenter
-import io.github.plastix.kotlinboilerplate.ui.base.MvpView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 
-abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
+abstract class RxViewModel : AbstractViewModel() {
 
     protected val disposables: CompositeDisposable = CompositeDisposable()
-    private val viewState: BehaviorSubject<Boolean> = BehaviorSubject.create()
-
-    init {
-        viewState.onNext(false)
-    }
+    private val viewState: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
     @CallSuper
-    override fun bindView(view: V) {
-        super.bindView(view)
+    override fun bind() {
+        super.bind()
         viewState.onNext(true)
     }
 
     @CallSuper
-    override fun unbindView() {
-        super.unbindView()
+    override fun unbind() {
+        super.unbind()
         viewState.onNext(false)
     }
 
