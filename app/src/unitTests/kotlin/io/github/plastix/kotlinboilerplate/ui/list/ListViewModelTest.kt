@@ -68,9 +68,6 @@ class ListViewModelTest {
 
         viewModel.fetchRepos()
 
-        Mockito.verify(apiService).repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
-        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
-
         viewModel.getRepos().test().assertValue(repos)
         viewModel.loadingState().test().assertValue(false)
     }
@@ -86,12 +83,10 @@ class ListViewModelTest {
         val response: SearchResponse = SearchResponse(0, listOf(mockRepo()))
         Mockito.`when`(apiService.repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Single.just(response))
-
         val networkObserver = viewModel.networkErrors().test()
 
         viewModel.fetchRepos()
 
-        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
         viewModel.loadingState().test().assertValue(false)
         networkObserver.assertValue(error)
     }
@@ -104,13 +99,10 @@ class ListViewModelTest {
         val error = Throwable("Error")
         Mockito.`when`(apiService.repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Single.error(error))
-
         val fetchObserver = viewModel.fetchErrors().test()
 
         viewModel.fetchRepos()
 
-        Mockito.verify(apiService).repoSearch(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
-        Mockito.verify(networkInteractor).hasNetworkConnectionCompletable()
         viewModel.loadingState().test().assertValue(false)
         fetchObserver.assertValue(error)
     }
