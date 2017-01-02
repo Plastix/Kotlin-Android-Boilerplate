@@ -1,4 +1,4 @@
-# Kotlin-Android-Boilerplate
+# Kotlin-Android-Boilerplate [![CircleCI](https://img.shields.io/circleci/project/Plastix/Kotlin-Android-Boilerplate/master.svg)](https://circleci.com/gh/Plastix/Kotlin-Android-Boilerplate)
 
 <p align="center">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_web.png" width="200">
