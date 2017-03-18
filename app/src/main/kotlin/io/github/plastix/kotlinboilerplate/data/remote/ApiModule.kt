@@ -16,14 +16,15 @@ class ApiModule {
     }
 
     @Provides @Singleton
-    fun provideRetrofit(rxJavaCallAdapterFactory: RxJava2CallAdapterFactory,
-                        gsonConverterFactory: GsonConverterFactory): Retrofit {
+    fun provideRetrofit(
+            rxJavaCallAdapterFactory: RxJava2CallAdapterFactory,
+            gsonConverterFactory: GsonConverterFactory
+    ): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(ApiConstants.GITHUB_API_BASE_ENDPOINT)
                 .addCallAdapterFactory(rxJavaCallAdapterFactory)
                 .addConverterFactory(gsonConverterFactory)
                 .build()
-
     }
 
     @Provides @Singleton

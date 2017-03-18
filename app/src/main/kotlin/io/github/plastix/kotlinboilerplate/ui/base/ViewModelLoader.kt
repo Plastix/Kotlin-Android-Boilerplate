@@ -6,8 +6,11 @@ import io.github.plastix.kotlinboilerplate.ui.ActivityScope
 import javax.inject.Inject
 import javax.inject.Provider
 
-class ViewModelLoader<T : ViewModel> @Inject constructor(@ActivityScope context: Context,
-                                                         private val viewModelFactory: Provider<T>) : Loader<T>(context) {
+class ViewModelLoader<T : ViewModel> @Inject constructor(
+        @ActivityScope context: Context,
+        private val viewModelFactory: Provider<T>
+) : Loader<T>(context) {
+
     private var viewModel: T? = null
 
     override fun onStartLoading() {
