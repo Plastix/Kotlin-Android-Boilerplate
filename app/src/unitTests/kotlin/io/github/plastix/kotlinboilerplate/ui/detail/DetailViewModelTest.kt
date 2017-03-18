@@ -14,15 +14,19 @@ class DetailViewModelTest {
 
     @Before
     fun setUp() {
-        owner = Owner("Author",
-                "someURL")
+        owner = Owner(
+                "Author",
+                "someURL"
+        )
 
-        repo = Repo("Name",
+        repo = Repo(
+                "Name",
                 "Author/Name",
                 owner,
                 "Some random repo",
                 50,
-                100)
+                100
+        )
 
         viewModel = DetailViewModel(repo)
         viewModel.bind()

@@ -19,7 +19,7 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
-        apiService: GithubApiService,
+        private val apiService: GithubApiService,
         private val networkInteractor: NetworkInteractor
 ) : RxViewModel() {
 
@@ -30,7 +30,7 @@ class ListViewModel @Inject constructor(
     private val fetchErrors: PublishSubject<Throwable> = PublishSubject.create()
     private val networkErrors: PublishSubject<Throwable> = PublishSubject.create()
 
-    val repoSearch = apiService.repoSearch(
+    val repoSearch get() = apiService.repoSearch(
             ApiConstants.SEARCH_QUERY_KOTLIN,
             ApiConstants.SEARCH_SORT_STARS,
             ApiConstants.SEARCH_ORDER_DESCENDING
