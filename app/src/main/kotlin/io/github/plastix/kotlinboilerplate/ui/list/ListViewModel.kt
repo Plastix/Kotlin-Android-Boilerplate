@@ -30,22 +30,22 @@ class ListViewModel @Inject constructor(
     private val fetchErrors: PublishSubject<Throwable> = PublishSubject.create()
     private val networkErrors: PublishSubject<Throwable> = PublishSubject.create()
 
-    val repoSearch get() = apiService.repoSearch(
-            ApiConstants.SEARCH_QUERY_KOTLIN,
-            ApiConstants.SEARCH_SORT_STARS,
-            ApiConstants.SEARCH_ORDER_DESCENDING
-    )
-
     fun fetchRepos() {
         networkRequest = networkInteractor
                 .hasNetworkConnectionCompletable()
-                .andThen(repoSearch)
+                .andThen(getRepoSearch())
                 .applySchedulers(getViewState())
                 .addOnResultEvents()
                 .subscribe(this::onRequestSuccess, this::onRequestError)
 
         addDisposable(networkRequest)
     }
+
+    private fun getRepoSearch() = apiService.repoSearch(
+            ApiConstants.SEARCH_QUERY_KOTLIN,
+            ApiConstants.SEARCH_SORT_STARS,
+            ApiConstants.SEARCH_ORDER_DESCENDING
+    )
 
     fun onRequestSuccess(value: SearchResponse) {
         repos.onNext(value.repos)
