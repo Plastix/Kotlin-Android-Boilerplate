@@ -23,13 +23,9 @@ open class DetailActivity : ViewModelActivity<DetailViewModel, ActivityDetailBin
         }
     }
 
-    private lateinit var repo: Repo
+    private val repo by lazy { intent.getParcelableExtra<Repo>(EXTRA_REPO_OBJECT) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // We need to inject our Book into the Dagger graph
-        // Thus we need grab it from the intent before we inject dependencies in super.onCreate()
-        repo = intent.getParcelableExtra(EXTRA_REPO_OBJECT)
-
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.detailToolbar)
         enableToolbarBackButton()
