@@ -90,29 +90,18 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
 
     private fun addDisposables() {
         disposables.apply {
-            add(viewModel.getRepos().subscribe {
-                updateList(it)
-            })
-
-            add(viewModel.loadingState().subscribe {
-                binding.listSwipeRefresh.isRefreshing = it
-            })
-
-            add(viewModel.fetchErrors().subscribe {
-                errorFetchRepos()
-            })
-
-            add(viewModel.networkErrors().subscribe {
-                errorNoNetwork()
-            })
+            add(viewModel.getRepos().subscribe(this@ListActivity::updateList))
+            add(viewModel.loadingState().subscribe(binding.listSwipeRefresh::setRefreshing))
+            add(viewModel.fetchErrors().subscribe(this@ListActivity::errorFetchRepos))
+            add(viewModel.networkErrors().subscribe(this@ListActivity::errorNoNetwork))
         }
     }
 
-    private fun errorNoNetwork() {
+    private fun errorNoNetwork(throwable: Throwable) {
         binding.listCoordinatorLayout.showSnackbar(R.string.list_error_no_network)
     }
 
-    private fun errorFetchRepos() {
+    private fun errorFetchRepos(throwable: Throwable) {
         binding.listCoordinatorLayout.showSnackbar(R.string.list_error_failed_fetch)
     }
 
