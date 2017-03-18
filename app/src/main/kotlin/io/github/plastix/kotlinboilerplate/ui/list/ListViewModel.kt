@@ -17,8 +17,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class ListViewModel @Inject constructor(private val apiService: GithubApiService,
-                                        private val networkInteractor: NetworkInteractor) : RxViewModel() {
+class ListViewModel @Inject constructor(
+        private val apiService: GithubApiService,
+        private val networkInteractor: NetworkInteractor
+) : RxViewModel() {
 
     private var networkRequest: Disposable = Disposables.disposed()
 

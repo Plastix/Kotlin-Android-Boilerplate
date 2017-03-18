@@ -4,30 +4,23 @@ import android.os.Parcel
 import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
-
         @SerializedName("total_count")
         val count: Int,
-
         @SerializedName("items")
         val repos: List<Repo>
 )
 
 data class Repo(
-
         val name: String,
-
         @SerializedName("full_name")
         val fullName: String,
-
         val owner: Owner,
-
         val description: String,
-
         @SerializedName("stargazers_count")
         val stars: Int,
-
         val forks: Int
 ) : DefaultParcelable {
+
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.write(name, fullName, owner, description, stars, forks)
     }
@@ -42,7 +35,6 @@ data class Repo(
 data class Owner(
         @SerializedName("login")
         val name: String,
-
         @SerializedName("avatar_url")
         val avatarUrl: String
 ) : DefaultParcelable {

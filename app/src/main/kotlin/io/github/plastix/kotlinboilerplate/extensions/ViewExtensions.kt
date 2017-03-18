@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.GONE
-}
+var View.isVisible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if(value) View.VISIBLE else View.GONE
+    }
 
 fun Context.inflateLayout(layoutResId: Int): View {
     return inflateView(this, layoutResId, null, false)

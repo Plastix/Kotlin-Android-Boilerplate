@@ -9,7 +9,8 @@ import android.support.v4.content.Loader
 import javax.inject.Inject
 import javax.inject.Provider
 
-abstract class ViewModelActivity<T : ViewModel, B : ViewDataBinding> : BaseActivity(),
+abstract class ViewModelActivity<T : ViewModel, B : ViewDataBinding>
+    : BaseActivity(),
         LoaderManager.LoaderCallbacks<T> {
 
     private val LOADER_ID = 1

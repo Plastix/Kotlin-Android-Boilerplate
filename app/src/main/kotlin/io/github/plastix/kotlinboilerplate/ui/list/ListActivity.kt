@@ -10,8 +10,7 @@ import io.github.plastix.kotlinboilerplate.ApplicationComponent
 import io.github.plastix.kotlinboilerplate.R
 import io.github.plastix.kotlinboilerplate.data.remote.model.Repo
 import io.github.plastix.kotlinboilerplate.databinding.ActivityListBinding
-import io.github.plastix.kotlinboilerplate.extensions.hide
-import io.github.plastix.kotlinboilerplate.extensions.show
+import io.github.plastix.kotlinboilerplate.extensions.isVisible
 import io.github.plastix.kotlinboilerplate.extensions.showSnackbar
 import io.github.plastix.kotlinboilerplate.ui.base.ViewModelActivity
 import io.github.plastix.kotlinboilerplate.ui.detail.DetailActivity
@@ -103,11 +102,8 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
     }
 
     private fun updateEmptyView() {
-        if (adapter.itemCount == 0) {
-            binding.emptyView.root.show()
-        } else {
-            binding.emptyView.root.hide()
-        }
+        val thereIsNoItems = adapter.itemCount == 0
+        binding.emptyView.root.isVisible = thereIsNoItems
     }
 
     private fun errorNoNetwork() {

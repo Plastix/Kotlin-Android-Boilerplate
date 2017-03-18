@@ -14,7 +14,9 @@ import javax.inject.Inject
  *
  * Adapted from https://gist.github.com/polbins/e37206fbc444207c0e92
  */
-class SimpleDividerItemDecoration @Inject constructor(@ApplicationQualifier context: Context) : RecyclerView.ItemDecoration() {
+class SimpleDividerItemDecoration @Inject constructor(
+        @ApplicationQualifier context: Context
+) : RecyclerView.ItemDecoration() {
 
     private val divider: Drawable = ContextCompat.getDrawable(context, R.drawable.line_divider)
 

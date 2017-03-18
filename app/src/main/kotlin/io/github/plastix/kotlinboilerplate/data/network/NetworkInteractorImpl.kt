@@ -6,17 +6,18 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkInteractorImpl @Inject constructor(private val connectivityManager:
-                                                ConnectivityManager) : NetworkInteractor {
+class NetworkInteractorImpl @Inject constructor(
+        private val connectivityManager: ConnectivityManager
+) : NetworkInteractor {
 
-    override fun hasNetworkConnection(): Boolean = connectivityManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
+    override fun hasNetworkConnection(): Boolean =
+            connectivityManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
 
-    override fun hasNetworkConnectionCompletable(): Completable {
-        if (hasNetworkConnection()) {
-            return Completable.complete()
-        } else {
-            return Completable.error { NetworkInteractor.NetworkUnavailableException() }
-        }
-    }
+    override fun hasNetworkConnectionCompletable(): Completable =
+            if (hasNetworkConnection()) {
+                Completable.complete()
+            } else {
+                Completable.error { NetworkInteractor.NetworkUnavailableException() }
+            }
 
 }
