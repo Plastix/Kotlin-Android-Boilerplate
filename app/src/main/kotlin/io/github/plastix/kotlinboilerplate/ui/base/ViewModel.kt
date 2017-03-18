@@ -1,6 +1,7 @@
 package io.github.plastix.kotlinboilerplate.ui.base
 
-interface ViewModel {
+interface
+ViewModel {
 
     fun bind()
 

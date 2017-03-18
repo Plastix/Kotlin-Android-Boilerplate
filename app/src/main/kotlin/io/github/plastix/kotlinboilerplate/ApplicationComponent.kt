@@ -23,5 +23,6 @@ interface ApplicationComponent {
     // Submodule methods
     // Every screen is its own submodule of the graph and must be added here.
     fun plus(module: ListModule): ListComponent
+
     fun plus(module: DetailModule): DetailComponent
 }

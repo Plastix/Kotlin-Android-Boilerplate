@@ -31,7 +31,6 @@ class ViewModelLoader<T : ViewModel> @Inject constructor(
 
     override fun onReset() {
         super.onReset()
-
         viewModel?.onDestroy()
     }
 }

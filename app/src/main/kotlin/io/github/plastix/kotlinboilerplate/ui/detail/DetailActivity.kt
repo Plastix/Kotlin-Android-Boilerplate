@@ -1,7 +1,6 @@
 package io.github.plastix.kotlinboilerplate.ui.detail
 
-import android.content.Context
-import android.content.Intent
+import activitystarter.Arg
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import io.github.plastix.kotlinboilerplate.ApplicationComponent
@@ -13,17 +12,7 @@ import io.github.plastix.kotlinboilerplate.ui.base.ViewModelActivity
 
 open class DetailActivity : ViewModelActivity<DetailViewModel, ActivityDetailBinding>() {
 
-    companion object {
-        val EXTRA_REPO_OBJECT = "REPO_ITEM"
-
-        fun newIntent(context: Context, repo: Repo): Intent {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(EXTRA_REPO_OBJECT, repo)
-            return intent
-        }
-    }
-
-    private val repo by lazy { intent.getParcelableExtra<Repo>(EXTRA_REPO_OBJECT) }
+    @Arg lateinit var repo: Repo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +25,8 @@ open class DetailActivity : ViewModelActivity<DetailViewModel, ActivityDetailBin
         binding.viewModel = viewModel
     }
 
-    override fun getViewBinding(): ActivityDetailBinding {
-        return DataBindingUtil.setContentView(this, R.layout.activity_detail)
-    }
+    override fun getViewBinding(): ActivityDetailBinding
+            = DataBindingUtil.setContentView(this, R.layout.activity_detail)
 
     override fun injectDependencies(graph: ApplicationComponent) {
         graph.plus(DetailModule(this, repo))

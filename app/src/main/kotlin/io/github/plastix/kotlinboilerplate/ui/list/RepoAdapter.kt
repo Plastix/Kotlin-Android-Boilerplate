@@ -60,7 +60,7 @@ class RepoAdapter @Inject constructor() : RecyclerView.Adapter<RepoAdapter.RepoV
 
     class RepoViewHolder(val binding: ItemRepoBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setClickListener(callback: ((Repo) -> Unit)?){
+        fun setClickListener(callback: ((Repo) -> Unit)?) {
             binding.viewModel.clicks().subscribe {
                 callback?.invoke(binding.viewModel.repo)
             }

@@ -2,7 +2,7 @@ package io.github.plastix.kotlinboilerplate.ui.base
 
 import android.databinding.BaseObservable
 
-abstract class AbstractViewModel : BaseObservable(),  ViewModel {
+abstract class AbstractViewModel : BaseObservable(), ViewModel {
 
     override fun bind() {
     }

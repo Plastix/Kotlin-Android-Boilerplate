@@ -11,30 +11,22 @@ import javax.inject.Singleton
 class ApiModule {
 
     @Provides @Singleton
-    fun provideApiService(retrofit: Retrofit): GithubApiService {
-        return retrofit.create(GithubApiService::class.java)
-    }
+    fun provideApiService(retrofit: Retrofit) = retrofit.create(GithubApiService::class.java)!!
 
     @Provides @Singleton
     fun provideRetrofit(
             rxJavaCallAdapterFactory: RxJava2CallAdapterFactory,
             gsonConverterFactory: GsonConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl(ApiConstants.GITHUB_API_BASE_ENDPOINT)
-                .addCallAdapterFactory(rxJavaCallAdapterFactory)
-                .addConverterFactory(gsonConverterFactory)
-                .build()
-    }
+    ) = Retrofit.Builder()
+            .baseUrl(ApiConstants.GITHUB_API_BASE_ENDPOINT)
+            .addCallAdapterFactory(rxJavaCallAdapterFactory)
+            .addConverterFactory(gsonConverterFactory)
+            .build()!!
 
     @Provides @Singleton
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
-    }
+    fun provideGsonConverterFactory() = GsonConverterFactory.create()!!
 
     @Provides @Singleton
-    fun provideRxJavaCallAdapter(): RxJava2CallAdapterFactory {
-        return RxJava2CallAdapterFactory.create()
-    }
+    fun provideRxJavaCallAdapter() = RxJava2CallAdapterFactory.create()!!
 
 }
