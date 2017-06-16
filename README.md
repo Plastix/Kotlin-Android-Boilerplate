@@ -8,6 +8,9 @@ An MVVM Boilerplate Android project written in [Kotlin](https://kotlinlang.org/)
 application fetches the top starred Kotlin repositories from Github and displays them. Inspired by
 @hitherejoe's [Android-Boilerplate](https://github.com/hitherejoe/Android-Boilerplate) project.
 
+>**Note**:
+>This project was developed before Google's introduction of Android Architecture Components at I/O 2017. I strongly encourage that you read their [application architecture guide](https://developer.android.com/topic/libraries/architecture/guide.html).
+
 ## Screenshots
 <img src="art/screenshots/list.png" width="49%" />
 <img src="art/screenshots/detail.png" width="49%" />
