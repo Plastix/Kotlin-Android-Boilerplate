@@ -13,7 +13,7 @@ import io.github.plastix.kotlinboilerplate.databinding.ActivityListBinding
 import io.github.plastix.kotlinboilerplate.extensions.isVisible
 import io.github.plastix.kotlinboilerplate.extensions.showSnackbar
 import io.github.plastix.kotlinboilerplate.ui.base.ViewModelActivity
-import io.github.plastix.kotlinboilerplate.ui.detail.DetailActivity
+import io.github.plastix.kotlinboilerplate.ui.detail.DetailActivityStarter
 import io.github.plastix.kotlinboilerplate.ui.misc.SimpleDividerItemDecoration
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -22,10 +22,10 @@ import javax.inject.Inject
 class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
 
     @Inject
-    lateinit var adapter: RepoAdapter
+    lateinit var listAdapter: RepoAdapter
 
     @Inject
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var listLayoutManager: LinearLayoutManager
 
     @Inject
     lateinit var dividerDecorator: SimpleDividerItemDecoration
@@ -43,27 +43,10 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
         setupRecyclerView()
         setupSwipeRefresh()
         updateEmptyView()
-
-        disposables.add(viewModel.getRepos().subscribe {
-            updateList(it)
-        })
-
-        disposables.add(viewModel.loadingState().subscribe {
-            binding.listSwipeRefresh.isRefreshing = it
-        })
-
-        disposables.add(viewModel.fetchErrors().subscribe {
-            errorFetchRepos()
-        })
-
-        disposables.add(viewModel.networkErrors().subscribe {
-            errorNoNetwork()
-        })
+        addDisposables()
     }
 
-    override fun getViewBinding(): ActivityListBinding {
-        return DataBindingUtil.setContentView(this, R.layout.activity_list)
-    }
+    override fun getViewBinding(): ActivityListBinding = DataBindingUtil.setContentView(this, R.layout.activity_list)
 
     private fun setupSwipeRefresh() {
         binding.listSwipeRefresh.setOnRefreshListener {
@@ -72,13 +55,12 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
     }
 
     private fun setupRecyclerView() {
-        binding.listRecyclerView.adapter = adapter
-        binding.listRecyclerView.layoutManager = layoutManager
-        binding.listRecyclerView.addItemDecoration(dividerDecorator)
-
-        adapter.setClickListener {
-            onItemClick(it)
+        binding.listRecyclerView.apply {
+            adapter = listAdapter
+            layoutManager = listLayoutManager
+            addItemDecoration(dividerDecorator)
         }
+        listAdapter.setClickListener(this::onItemClick)
     }
 
     override fun injectDependencies(graph: ApplicationComponent) {
@@ -93,24 +75,33 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
     }
 
     private fun onItemClick(repo: Repo) {
-        startActivity(DetailActivity.newIntent(this, repo))
+        DetailActivityStarter.start(this, repo)
     }
 
     private fun updateList(repos: List<Repo>) {
-        adapter.updateRepos(repos)
+        listAdapter.updateRepos(repos)
         updateEmptyView()
     }
 
     private fun updateEmptyView() {
-        val thereIsNoItems = adapter.itemCount == 0
+        val thereIsNoItems = listAdapter.itemCount == 0
         binding.emptyView.root.isVisible = thereIsNoItems
     }
 
-    private fun errorNoNetwork() {
+    private fun addDisposables() {
+        disposables.apply {
+            add(viewModel.getRepos().subscribe(this@ListActivity::updateList))
+            add(viewModel.loadingState().subscribe(binding.listSwipeRefresh::setRefreshing))
+            add(viewModel.fetchErrors().subscribe(this@ListActivity::errorFetchRepos))
+            add(viewModel.networkErrors().subscribe(this@ListActivity::errorNoNetwork))
+        }
+    }
+
+    private fun errorNoNetwork(throwable: Throwable) {
         binding.listCoordinatorLayout.showSnackbar(R.string.list_error_no_network)
     }
 
-    private fun errorFetchRepos() {
+    private fun errorFetchRepos(throwable: Throwable) {
         binding.listCoordinatorLayout.showSnackbar(R.string.list_error_failed_fetch)
     }
 
@@ -119,29 +110,24 @@ class ListActivity : ViewModelActivity<ListViewModel, ActivityListBinding>() {
         disposables.clear()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                Timber.d("Settings menu clicked!")
-                true
-            }
-
-            R.id.action_night -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                recreate()
-                true
-            }
-
-            R.id.action_day -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                recreate()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_settings -> {
+            Timber.d("Settings menu clicked!")
+            true
         }
+        R.id.action_night -> {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            recreate()
+            true
+        }
+        R.id.action_day -> {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            recreate()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

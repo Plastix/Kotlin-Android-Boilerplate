@@ -8,6 +8,7 @@ import io.github.plastix.kotlinboilerplate.data.remote.model.SearchResponse
 import io.github.plastix.kotlinboilerplate.ui.base.RxViewModel
 import io.github.plastix.rxdelay.RxDelay
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
@@ -30,35 +31,24 @@ class ListViewModel @Inject constructor(
     private val networkErrors: PublishSubject<Throwable> = PublishSubject.create()
 
     fun fetchRepos() {
-        networkRequest = networkInteractor.hasNetworkConnectionCompletable()
-                .andThen(apiService.repoSearch(ApiConstants.SEARCH_QUERY_KOTLIN,
-                        ApiConstants.SEARCH_SORT_STARS,
-                        ApiConstants.SEARCH_ORDER_DESCENDING))
-                .subscribeOn(Schedulers.io())
-                .compose(RxDelay.delaySingle(getViewState()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    networkRequest.dispose() // Cancel any current running request
-                    loadingState.onNext(true)
-                }
-                .doOnEvent { searchResponse, throwable ->
-                    loadingState.onNext(false)
-                }
-                .subscribeWith(object : DisposableSingleObserver<SearchResponse>() {
-                    override fun onError(e: Throwable) {
-                        System.out.println(e.toString())
-                        when (e) {
-                            is NetworkInteractor.NetworkUnavailableException -> networkErrors.onNext(e)
-                            else -> fetchErrors.onNext(e)
-                        }
-                    }
-
-                    override fun onSuccess(value: SearchResponse) {
-                        repos.onNext(value.repos)
-                    }
-                })
+        networkRequest = networkInteractor
+                .hasNetworkConnectionCompletable()
+                .andThen(getRepoSearch())
+                .applySchedulers(getViewState())
+                .addOnResultEvents()
+                .subscribe(this::onRequestSuccess, this::onRequestError)
 
         addDisposable(networkRequest)
+    }
+
+    private fun getRepoSearch() = apiService.repoSearch(
+            ApiConstants.SEARCH_QUERY_KOTLIN,
+            ApiConstants.SEARCH_SORT_STARS,
+            ApiConstants.SEARCH_ORDER_DESCENDING
+    )
+
+    fun onRequestSuccess(value: SearchResponse) {
+        repos.onNext(value.repos)
     }
 
     fun getRepos(): Observable<List<Repo>> = repos.hide()
@@ -68,5 +58,27 @@ class ListViewModel @Inject constructor(
     fun networkErrors(): Observable<Throwable> = networkErrors.hide()
 
     fun loadingState(): Observable<Boolean> = loadingState.hide()
+
+    private fun <T> Single<T>.applySchedulers(viewState: Observable<Boolean>) = this
+            .subscribeOn(Schedulers.io())
+            .compose(RxDelay.delaySingle(viewState))
+            .observeOn(AndroidSchedulers.mainThread())
+
+    private fun <T> Single<T>.addOnResultEvents() = this
+            .doOnSubscribe {
+                networkRequest.dispose() // Cancel any current running request
+                loadingState.onNext(true)
+            }
+            .doOnEvent { _, _ ->
+                loadingState.onNext(false)
+            }
+
+    private fun onRequestError(e: Throwable) {
+        System.out.println(e.toString())
+        when (e) {
+            is NetworkInteractor.NetworkUnavailableException -> networkErrors.onNext(e)
+            else -> fetchErrors.onNext(e)
+        }
+    }
 
 }

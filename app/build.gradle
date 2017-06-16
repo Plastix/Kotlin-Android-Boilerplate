@@ -90,11 +90,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Google Support Libraries
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:support-fragment:25.1.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:support-fragment:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
 
     // RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.0.0'
@@ -117,6 +117,10 @@ dependencies {
 
     // Databinding
     kapt "com.android.databinding:compiler:$android_plugin_version"
+
+    // ActivityStarter
+    compile 'com.github.marcinmoskala.activitystarter:activitystarter:0.30'
+    kapt 'com.github.marcinmoskala.activitystarter:activitystarter-compiler:0.30'
 
     // Unit Testing
     testCompile 'junit:junit:4.12'

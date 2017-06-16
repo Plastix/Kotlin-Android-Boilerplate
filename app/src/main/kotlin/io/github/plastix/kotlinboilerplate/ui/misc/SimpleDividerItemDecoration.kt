@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import io.github.plastix.kotlinboilerplate.ApplicationQualifier
 import io.github.plastix.kotlinboilerplate.R
+import io.github.plastix.kotlinboilerplate.extensions.childList
+import io.github.plastix.kotlinboilerplate.extensions.recyclerParams
 import javax.inject.Inject
 
 /**
@@ -24,17 +26,16 @@ class SimpleDividerItemDecoration @Inject constructor(
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
 
-        val childCount = parent.childCount
-        for (i in 0..childCount - 1) {
-            val child = parent.getChildAt(i)
-
-            val params = child.layoutParams as RecyclerView.LayoutParams
-
-            val top = child.bottom + params.bottomMargin
+        parent.childList.forEach { child ->
+            val top = child.bottom + child.recyclerParams.bottomMargin
             val bottom = top + divider.intrinsicHeight
 
-            divider.setBounds(left, top, right, bottom)
-            divider.draw(c)
+            drawDivider(c, left, top, right, bottom)
         }
+    }
+
+    private fun drawDivider(c: Canvas, left: Int, top: Int, right: Int, bottom: Int) {
+        divider.setBounds(left, top, right, bottom)
+        divider.draw(c)
     }
 }

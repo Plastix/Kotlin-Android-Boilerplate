@@ -13,11 +13,9 @@ class NetworkInteractorImpl @Inject constructor(
     override fun hasNetworkConnection(): Boolean =
             connectivityManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
 
-    override fun hasNetworkConnectionCompletable(): Completable =
-            if (hasNetworkConnection()) {
-                Completable.complete()
-            } else {
-                Completable.error { NetworkInteractor.NetworkUnavailableException() }
-            }
+    override fun hasNetworkConnectionCompletable(): Completable = when {
+        hasNetworkConnection() -> Completable.complete()
+        else -> Completable.error { NetworkInteractor.NetworkUnavailableException() }
+    }
 
 }
