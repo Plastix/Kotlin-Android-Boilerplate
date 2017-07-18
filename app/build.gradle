@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt' // Use experimental kapt implementation
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "io.github.plastix.kotlinboilerplate"
@@ -90,11 +90,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Google Support Libraries
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:support-fragment:25.1.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-fragment:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
     // RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.0.0'
